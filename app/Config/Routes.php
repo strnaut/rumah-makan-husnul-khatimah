@@ -40,6 +40,7 @@ $routes->group('orders', function ($routes) {
 $routes->group('admin', ['filter' => 'role:admin'], function($routes) {
     $routes->get('/', 'AdminController::index');
     $routes->get('orders_list', 'AdminController::orderlist');
+    $routes->get('orders_list/detail/(:num)', 'AdminController::orderDetail/$1'); // Rute baru untuk detail pesanan
     $routes->post('updateStatus/(:num)', 'AdminController::updateStatus/$1');
     $routes->post('verifyPayment/(:num)', 'AdminController::verifyPayment/$1');
     $routes->get('users', 'AdminController::users'); 

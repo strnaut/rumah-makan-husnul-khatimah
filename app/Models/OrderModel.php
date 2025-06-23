@@ -58,7 +58,7 @@ class OrderModel extends Model
         return array_values($groupedOrders);
     }
 
-    public function getAllOrdersWithDetails($statusFilter = null)
+    public function getAllOrdersWithDetails($statusFilter = null, $orderId = null) // Tambahkan $orderId
     {
         $builder = $this->db->table($this->table);
         $builder->select('orders.id as order_id, orders.name as customer_name, orders.address, orders.phone_number, orders.order_date, orders.payment_proof, orders.verification_status, orders.rejection_reason, order_details.qty, order_details.status, order_details.id as order_detail_id, product.product_name, product.price');
@@ -67,6 +67,9 @@ class OrderModel extends Model
         
         if ($statusFilter) {
             $builder->where('orders.verification_status', $statusFilter);
+        }
+        if ($orderId) { // Tambahkan kondisi jika orderId diberikan
+            $builder->where('orders.id', $orderId);
         }
 
         $builder->orderBy('orders.order_date', 'DESC');

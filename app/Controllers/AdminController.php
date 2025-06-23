@@ -113,10 +113,21 @@ class AdminController extends Controller
         return view('admin/orders_list', $data);
     }
 
+    public function orderDetail($orderId)
+    {
+        $order = $this->orderModel->getAllOrdersWithDetails(null, $orderId); // Panggil fungsi dengan filter id
+        if (empty($order)) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Detail pesanan tidak ditemukan untuk ID: ' . $orderId);
+        }
+        // Karena getAllOrdersWithDetails mengembalikan array dari grouped orders, kita ambil yang pertama
+        $data['order'] = $order[0]; 
+        return view('admin/order_detail', $data);
+    }
+
     public function updateStatus($orderId)
     {
         $status = $this->request->getPost('status');
-        $rejectionReason = $this->request->getPost('rejection_reason');
+        // $rejectionReason = $this->request->getPost('rejection_reason'); // Komentar ini karena rejection_reason dipindah ke verification status
 
         $validStatus = ['menunggu konfirmasi', 'diproses', 'dalam perjalanan', 'selesai', 'ditolak'];
 
@@ -128,18 +139,18 @@ class AdminController extends Controller
         $orderDetails = $this->orderDetailModel->where('order_id', $orderId)->findAll();
 
         $dataToUpdate = ['status' => $status, 'updated_at' => date('Y-m-d H:i:s')];
-        if ($status === 'ditolak' && !empty($rejectionReason)) {
-            $dataToUpdate['rejection_reason'] = $rejectionReason;
-        } else {
-             $dataToUpdate['rejection_reason'] = null;
-        }
+        // if ($status === 'ditolak' && !empty($rejectionReason)) { // Komentar ini
+        //     $dataToUpdate['rejection_reason'] = $rejectionReason; // Komentar ini
+        // } else {
+        //      $dataToUpdate['rejection_reason'] = null;
+        // }
 
         foreach ($orderDetails as $detail) {
             $this->orderDetailModel->update($detail['id'], $dataToUpdate);
         }
 
         $this->session->setFlashdata('success', 'Status pesanan berhasil diubah untuk Order ID: ' . $orderId);
-        return redirect()->to('admin/orders_list');
+        return redirect()->to('admin/orders_list/detail/' . $orderId); // Redirect ke halaman detail
     }
 
     public function verifyPayment($orderId)
@@ -170,7 +181,7 @@ class AdminController extends Controller
                 $this->orderDetailModel->update($detail['id'], [
                     'status' => 'ditolak',
                     'updated_at' => date('Y-m-d H:i:s'),
-                    'rejection_reason' => $rejectionReason
+                    // 'rejection_reason' => $rejectionReason // Jika ingin alasan penolakan item terpisah
                 ]);
             }
         }
@@ -178,7 +189,7 @@ class AdminController extends Controller
             $orderDetails = $this->orderDetailModel->where('order_id', $orderId)->findAll();
             foreach ($orderDetails as $detail) {
                 $this->orderDetailModel->update($detail['id'], [
-                    'status' => 'diproses',
+                    'status' => 'diproses', // Ubah status item menjadi 'diproses' saat order terverifikasi
                     'updated_at' => date('Y-m-d H:i:s'),
                     'rejection_reason' => null
                 ]);
@@ -186,7 +197,7 @@ class AdminController extends Controller
         }
 
         $this->session->setFlashdata('success', 'Status verifikasi pembayaran berhasil diubah untuk Order ID: ' . $orderId);
-        return redirect()->to('admin/orders_list');
+        return redirect()->to('admin/orders_list/detail/' . $orderId); // Redirect ke halaman detail
     }
 
     public function users()
