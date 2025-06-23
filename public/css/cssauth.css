@@ -1,0 +1,141 @@
+html {
+    min-height: 100vh;
+    min-width: 1100px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+body{
+    font-family: Inter;
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    -webkit-text-size-adjust: none;
+    background-color: #b1cb8f;
+    align-items: center;
+}
+
+.container {
+    width: 1040px;
+    height: 400px;
+    background-color: white;
+    border-radius: 25px;
+    padding: 30px 46px 30px 46px;
+    box-shadow: 0px 2px 12px -1px black;
+}
+
+.coloumn {
+    float: left;
+    height: 100%;
+}
+
+.left, .right{
+    height: 100%;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start;
+    width: 60%;
+}
+
+.right {
+    display: flex;
+    justify-content: center;
+    width: 40%;
+    flex-direction: column;
+}
+
+img {
+    width: 200px;
+}
+
+h1, h2{
+    font-weight: 400;
+}
+
+h1 {
+    margin: 20px 0 20px 0;
+}
+
+h2 {
+    opacity: 80%;
+    font-size: large;
+    margin: 0;
+}
+
+form {
+    width: -webkit-fill-available;
+    display: flex;
+    flex-direction: column;
+    row-gap: 10px;
+    justify-content: center;
+}
+
+.form-control {
+    border: 1px solid gray;
+    height: 2.5rem;
+    text-indent: 1em;
+    border-radius: 6px;
+    font-size: medium;
+    width: -webkit-fill-available;
+}
+
+.qweq {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+    gap: 5px;
+}
+
+.qweq a, .qweq p{
+    text-decoration: none;
+    margin: 0;
+}
+
+.qweq a {
+    color: blue;
+}
+
+
+button {
+    width: 100%;
+    height: 40px;
+    border-radius: 10px;
+    border: 0px;
+    background: #b1cb8f;
+    font-weight: 600;
+    color: black;
+    font-size: large;
+}
+
+button:hover {
+    background-color: #30bd3b;
+    color: white;
+}
+
+.left p {
+    display: flex;
+    margin: auto 0 0 0;
+    align-items: flex-end;
+    font-style: italic;
+}
+
+.alert {
+    color: red;
+    background-color: #ffb9b9;
+    padding: 8px 20px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+}
+
+.alert-success{
+    color: #ffffff;
+    background-color: #72d0dc;
+    border: 2px solid #03A9F4;
+    font-weight: bold;
+}
